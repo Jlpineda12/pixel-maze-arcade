@@ -1,0 +1,36 @@
+// Application Entry Point for Pixel Maze Arcade
+import { SynthEngine } from './audio/SynthEngine.js';
+import { SoundEffects } from './audio/SoundEffects.js';
+import { MazeMusic } from './audio/MazeMusic.js';
+import { Game } from './game/Game.js';
+
+window.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('game-canvas');
+  const synth = new SynthEngine();
+  const sfx = new SoundEffects(synth);
+  const music = new MazeMusic(synth);
+  const game = new Game(canvas, synth, sfx, music);
+
+  // Audio start trigger on first user interaction
+  const startAudio = () => {
+    if (!synth.initialized) {
+      synth.init();
+      music.start('menu');
+    } else {
+      synth.resume();
+    }
+  };
+
+  window.addEventListener('click', startAudio, { once: true });
+  window.addEventListener('touchstart', startAudio, { once: true });
+  window.addEventListener('keydown', startAudio, { once: true });
+
+  // Main 60 FPS animation loop
+  function loop(timestamp) {
+    game.update(timestamp);
+    game.render();
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+});

@@ -1,0 +1,22 @@
+{
+  "name": "pixel-maze-arcade",
+  "version": "1.0.0",
+  "description": "Retro Pac-Chaser arcade game with 4 distinct AI ghosts, warp tunnels, and procedural Web Audio API chiptune music.",
+  "type": "module",
+  "scripts": {
+    "test": "node test/qa-runner.js",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "arcade",
+    "retro",
+    "pixel-art",
+    "pacman",
+    "maze",
+    "web-audio-api",
+    "chiptune",
+    "game-boy"
+  ],
+  "author": "Jose Luis Pineda (Jlpineda12)",
+  "license": "MIT"
+}
