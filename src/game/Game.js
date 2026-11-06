@@ -1,5 +1,6 @@
 // Main Pixel Maze Arcade Game Controller
 
+import { renderThemedMenu, drawThemedBackdrop } from './MenuFX.js';
 import { MazeMap } from './MazeMap.js';
 import { Pacman, DIRS } from './Pacman.js';
 import { Ghost, GHOST_NAMES, GHOST_STATES } from './Ghost.js';
@@ -327,9 +328,8 @@ export class Game {
     const { ctx } = this;
     ctx.save();
 
-    // Plum background (#351d3d)
-    ctx.fillStyle = '#351d3d';
-    ctx.fillRect(0, 0, this.width, this.height);
+    // Themed animated backdrop (shared with the title screen)
+    drawThemedBackdrop(ctx, 'maze', this.width, this.height);
 
     if (this.shakeIntensity > 0) {
       const sx = (Math.random() - 0.5) * this.shakeIntensity * 2;
@@ -392,93 +392,21 @@ export class Game {
   }
 
   renderMenu() {
-    const { ctx, width } = this;
-    ctx.save();
-    ctx.textAlign = 'center';
-    const cx = width / 2;
-
-    // Top-Left: HI-SCORE
-    ctx.textAlign = 'left';
-    ctx.font = '12px "Press Start 2P", monospace';
-    ctx.fillStyle = '#fff5ea';
-    ctx.fillText('HI-SCORE', 34, 40);
-
-    ctx.fillStyle = '#fda415';
-    ctx.fillText(this.highScore.toString().padStart(6, '0'), 34, 62);
-
-    // Top-Right: 5 Hearts
-    this.drawPixelHearts(380, 32, 5);
-
-    // Main Title: MAZE
-    ctx.textAlign = 'center';
-    ctx.font = '40px "Press Start 2P", monospace';
-
-    // 3D Shadow
-    ctx.fillStyle = '#1c0a22';
-    ctx.fillText('MAZE', cx + 3, 193);
-
-    // Gradient Bevel
-    ctx.fillStyle = '#fc7814';
-    ctx.fillText('MAZE', cx, 190);
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, 145, width, 24);
-    ctx.clip();
-    ctx.fillStyle = '#fda415';
-    ctx.fillText('MAZE', cx, 190);
-    ctx.restore();
-
-    ctx.font = '11px "Press Start 2P", monospace';
-    ctx.fillStyle = '#00f5d4';
-    ctx.fillText('★ RETRO PAC-CHASER 1980 ★', cx, 230);
-
-    // Subtitle: ARE YOU READY?
-    ctx.font = '14px "Press Start 2P", monospace';
-    ctx.fillStyle = '#fff5ea';
-    ctx.fillText('ARE YOU READY?', cx, 295);
-
-    // Options: YES ◀       NO
-    ctx.font = '18px "Press Start 2P", monospace';
-    ctx.textAlign = 'right';
-    ctx.fillStyle = '#fff5ea';
-    ctx.fillText('YES', 230, 354);
-
-    if (this.selectedChoice === 'YES') {
-      ctx.fillStyle = '#fda415';
-      ctx.beginPath();
-      ctx.moveTo(244, 346);
-      ctx.lineTo(258, 338);
-      ctx.lineTo(258, 354);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    ctx.textAlign = 'left';
-    ctx.fillStyle = '#fff5ea';
-    ctx.fillText('NO', 320, 354);
-
-    if (this.selectedChoice === 'NO') {
-      ctx.fillStyle = '#fda415';
-      ctx.beginPath();
-      ctx.moveTo(366, 346);
-      ctx.lineTo(380, 338);
-      ctx.lineTo(380, 354);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    // In-Menu Controls Prompt
-    ctx.textAlign = 'center';
-    ctx.font = '10px "Press Start 2P", monospace';
-    ctx.fillStyle = '#b39ebd';
-    ctx.fillText('PRESS [C] FOR CONTROLS', cx, 392);
-
-    ctx.restore();
+    // Themed animated title screen (backdrop, wave title, attract-mode scene)
+    renderThemedMenu(this.ctx, {
+      id: 'maze',
+      width: this.canvas.width,
+      height: this.canvas.height,
+      highScore: this.highScore,
+      choice: this.selectedChoice
+    });
   }
 
   renderControls() {
     const { ctx, width } = this;
+    drawThemedBackdrop(ctx, 'maze', this.canvas.width, this.canvas.height);
+    ctx.fillStyle = 'rgba(8, 3, 14, 0.55)';
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     ctx.save();
     ctx.textAlign = 'center';
     const cx = width / 2;
